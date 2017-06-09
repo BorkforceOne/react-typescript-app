@@ -61,11 +61,19 @@ const start = () => {
 
 	app.use(webpackDevMiddleware(compiler,
 		{
+			stats: {
+				colors: true
+			},
+			compress: true,
+			watchContentBase: true,
 			hot: true,
 			historyApiFallback: true,
 			contentBase: config.output.path,
 			publicPath: config.output.publicPath,
-			headers: { 'Access-Control-Allow-Origin': '*' }
+			headers: { 'Access-Control-Allow-Origin': '*' },
+			watchOptions: {
+				ignored: /node_modules/,
+			}
 		}));
 
 	app.use(webpackHotMiddleware(compiler, {}));
@@ -73,7 +81,7 @@ const start = () => {
 	app.listen(DEFAULT_PORT, HOST, (err, result) => {
 		if (err)
 			return console.error(err);
-		console.log(`Webpack Dev Server is fired up on ${HOST}:${DEFAULT_PORT} buckaroo!`);
+		console.log(`Webpack Dev Server is fired up on http://${HOST}:${DEFAULT_PORT} buckaroo!`);
 	});
 };
 
